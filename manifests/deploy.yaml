@@ -6,7 +6,7 @@ metadata:
   labels:
     app: nodeapp
 spec:
-  replicas: 3  # Change the number of replicas as needed
+  replicas: 1 
   selector:
     matchLabels:
       app: nodeapp
