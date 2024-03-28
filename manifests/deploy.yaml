@@ -7,7 +7,7 @@ metadata:
   labels:
     app: nodeapp
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: nodeapp
@@ -33,11 +33,11 @@ spec:
             httpGet:
               path: /healthz  # Change this path to your application's health check endpoint
               port: 3000      # Change this port to match your container port
-            initialDelaySeconds: 40
-            periodSeconds: 500
-            timeoutSeconds: 300
-            successThreshold: 10
-            failureThreshold: 30
+            initialDelaySeconds: 4
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
           terminationGracePeriodSeconds: 60
 
 
