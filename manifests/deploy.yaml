@@ -1,36 +1,53 @@
 ---
 
-containers:
-  - name: nodeapp
-    image: anshu049/node-test-app:latest
-    ports:
-      - containerPort: 3000
-    imagePullPolicy: Always  
-    resources:
-      requests:
-        cpu: "100m"
-        memory: "256Mi"
-      limits:
-        cpu: "500m"
-        memory: "512Mi"
-    readinessProbe:
-      httpGet:
-        path: /healthz  # Change this path to your application's health check endpoint
-        port: 3000      # Change this port to match your container port
-      initialDelaySeconds: 10
-      periodSeconds: 5
-      timeoutSeconds: 3
-      successThreshold: 1
-      failureThreshold: 3
-    livenessProbe:
-      httpGet:
-        path: /healthz  # Change this path to your application's health check endpoint
-        port: 3000      # Change this port to match your container port
-      initialDelaySeconds: 60
-      periodSeconds: 10
-      timeoutSeconds: 3
-      successThreshold: 1
-      failureThreshold: 3
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeapp
+  labels:
+    app: nodeapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodeapp
+  template:
+    metadata:
+      labels:
+        app: nodeapp
+    spec:
+      containers:
+        - name: nodeapp
+          image: anshu049/node-test-app:latest
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /healthz  # Change this path to your application's health check endpoint
+              port: 3000      # Change this port to match your container port
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz  # Change this path to your application's health check endpoint
+              port: 3000      # Change this port to match your container port
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+
 
 ---
 
