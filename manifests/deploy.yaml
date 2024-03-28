@@ -2,7 +2,7 @@
 
 containers:
   - name: nodeapp
-    image: anshu049/node-test-app:latest-f9010f50ec5d0aad76fa1fa0b19df30dbab43da2
+    image: anshu049/node-test-app:latest
     ports:
       - containerPort: 3000
     imagePullPolicy: Always  
