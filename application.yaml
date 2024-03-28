@@ -21,5 +21,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - Validate=false  # Disable validation to speed up sync
-  syncWave:
-    force: true  # Force synchronization immediately upon changes
