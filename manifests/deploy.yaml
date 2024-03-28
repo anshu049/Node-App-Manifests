@@ -1,52 +1,36 @@
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    role: nodeapp
-    app: nodeapp
-  name: nodeapp
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      role: nodeapp
-      app: nodeapp
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        role: nodeapp
-        app: nodeapp
-    spec:
-      containers:
-      - name: nodeapp
-        image: anshu049/node-test-app:latest
-        ports:
-        - containerPort: 3000
-        imagePullPolicy: Always
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "256Mi"
-          limits:
-            cpu: "500m"
-            memory: "512Mi"
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 3000
-          initialDelaySeconds: 15
-          periodSeconds: 10
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
+
+containers:
+  - name: nodeapp
+    image: anshu049/node-test-app:latest-f9010f50ec5d0aad76fa1fa0b19df30dbab43da2
+    ports:
+      - containerPort: 3000
+    imagePullPolicy: Always  
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+    readinessProbe:
+      httpGet:
+        path: /healthz  # Change this path to your application's health check endpoint
+        port: 3000      # Change this port to match your container port
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 3
+      successThreshold: 1
+      failureThreshold: 3
+    livenessProbe:
+      httpGet:
+        path: /healthz  # Change this path to your application's health check endpoint
+        port: 3000      # Change this port to match your container port
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 3
+      successThreshold: 1
+      failureThreshold: 3
 
 ---
 
