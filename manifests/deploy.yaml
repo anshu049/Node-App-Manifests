@@ -2,17 +2,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodeapp
+  annotations:
+    deployment.kubernetes.io/revision: "1"
   labels:
+    role: nodeapp
     app: nodeapp
+  name: nodeapp
 spec:
   replicas: 1
   selector:
     matchLabels:
+      role: nodeapp
       app: nodeapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
+        role: nodeapp
         app: nodeapp
     spec:
       containers:
@@ -20,7 +30,7 @@ spec:
         image: anshu049/node-test-app:latest
         ports:
         - containerPort: 3000
-        imagePullPolicy: Always  
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: "100m"
@@ -34,7 +44,13 @@ spec:
             port: 3000
           initialDelaySeconds: 15
           periodSeconds: 10
-
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
 
 ---
 
