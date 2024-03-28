@@ -9,6 +9,8 @@ spec:
     repoURL: https://github.com/anshu049/Node-App-Manifests.git
     targetRevision: HEAD
     path: manifests
+    directory:
+      recurse: true  # Fetch changes from all directories recursively
   destination:
     server: https://kubernetes.default.svc
     namespace: nodeapp
@@ -18,3 +20,6 @@ spec:
       prune: true
     syncOptions:
       - CreateNamespace=true
+      - Validate=false  # Disable validation to speed up sync
+  syncWave:
+    force: true  # Force synchronization immediately upon changes
