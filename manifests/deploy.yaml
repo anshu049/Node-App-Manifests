@@ -24,11 +24,11 @@ spec:
           imagePullPolicy: Always
           resources:
             requests:
-              cpu: "100m"
-              memory: "256Mi"
-            limits:
               cpu: "500m"
-              memory: "512Mi"
+              memory: "500Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1000Mi"
           readinessProbe:
             httpGet:
               path: /healthz  # Change this path to your application's health check endpoint
