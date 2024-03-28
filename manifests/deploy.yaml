@@ -34,17 +34,8 @@ spec:
               path: /healthz  # Change this path to your application's health check endpoint
               port: 3000      # Change this port to match your container port
             initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 3
-            successThreshold: 1
-            failureThreshold: 3
-          livenessProbe:
-            httpGet:
-              path: /healthz  # Change this path to your application's health check endpoint
-              port: 3000      # Change this port to match your container port
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 3
+            periodSeconds: 500
+            timeoutSeconds: 300
             successThreshold: 1
             failureThreshold: 3
 
