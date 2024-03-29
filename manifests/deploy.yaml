@@ -1,5 +1,4 @@
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,7 +6,7 @@ metadata:
   labels:
     app: nodeapp
 spec:
-  replicas: 1
+  replicas: 3  # Initial number of replicas
   selector:
     matchLabels:
       app: nodeapp
@@ -16,36 +15,20 @@ spec:
       labels:
         app: nodeapp
     spec:
+      imagePullSecrets:
+      - name: my-registry-key
       containers:
-        - name: nodeapp
-          image: anshu049/node-test-app:latest
-          ports:
-            - containerPort: 3000
-          imagePullPolicy: Always
-          resources:
-            requests:
-              cpu: "500m"
-              memory: "500Mi"
-            limits:
-              cpu: "1000m"
-              memory: "1000Mi"
-          readinessProbe:
-            httpGet:
-              path: /healthz  # Change this path to your application's health check endpoint
-              port: 3000      # Change this port to match your container port
-            initialDelaySeconds: 10  # Wait 10 seconds after container starts before probing
-            periodSeconds: 15        # Probe the container every 15 seconds
-            failureThreshold: 3      # Consider the container unhealthy after 3 consecutive failures
-          livenessProbe:              # Add livenessProbe for Crash Loop Backoff
-            httpGet:
-              path: /healthz
-              port: 3000
-            initialDelaySeconds: 15
-            periodSeconds: 20
-            failureThreshold: 5
+      - name: nodeapp
+        image: anshu049/nodeapp:latest
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "500m"  
+          requests:
 
-
-
+            cpu: "200m"  
 ---
 
 apiVersion: v1
@@ -55,7 +38,8 @@ metadata:
   labels:
     app: nodeapp
 spec:
-  type: LoadBalancer  
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster  # Added externalTrafficPolicy for traffic handling
   selector:
     app: nodeapp
   ports:
